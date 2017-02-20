@@ -1,3 +1,6 @@
+/*
+This Module implements the parsing Moore FSM of Ethernet Header Fields 
+*/
 module header_fsm(
 		input clock,
 		input reset,
@@ -6,18 +9,14 @@ module header_fsm(
 		output preamble_valid,
 		output src_addr_valid,
 		output dst_addr_valid,
-		output type_length_valid,
-		output packet_size_valid,
-		output [3:0] valid_packet_counter 
+		output type_length_valid
 	);
 
 wire [7:0] data;
 wire clock, reset, control;
 
 reg preamble_valid, src_addr_valid, 
-	dst_addr_valid, type_length_valid,
-	packet_size_valid;
-reg [3:0] valid_packet_counter;
+	dst_addr_valid, type_length_valid;
 
 reg [4:0] state, next_state;
 
@@ -77,29 +76,61 @@ always @(state or data or control) begin
 			{STATE20,8'h08}:next_state = STATE21;//1st byte TYPE_LENGTH
 			{STATE21,8'h00}:next_state = STATE22;//2nd byte TYPE_LENGTH
 
-			default: next_state = STATE0; //anything Else is start from begininng 
+			default: next_state = STATE0; //anything Else -> start from begininng 
 		endcase
 	end
 end
 
+//SEQUENTIAL LOGIC
 always @(posedge clock) begin //positive transition of clock 
-	if (rst) begin
-		// reset
-		
-	end
-	else if () begin
-		
+	if (reset == 1'b1) begin //positive High reset
+		state <= STATE0;
+		preamble_valid <= 1'b0;
+		dst_addr_valid <= 1'b0;
+		src_addr_valid <= 1'b0;
+		type_length_valid <= 1'b0;
+	end else begin
+		case(state)
+			//STATE0 is equivilant to start (either during instantiation or failure during parsing)
+			STATE0:begin
+					preamble_valid <= 1'b0;
+					dst_addr_valid <= 1'b0;
+					src_addr_valid <= 1'b0;
+					type_length_valid <= 1'b0;		
+				end
+
+			//STATE8 is equivilant to valid PREAMBLE received
+			STATE8: begin
+					preamble_valid <= 1'b1;
+				end
+			//STATE9 is equivilant to valid PREAMBLE received last posedge of clock
+			STATE9:begin
+					preamble_valid <= 1'b0;
+				end
+
+			//STATE14 is equivilant to valid DST_ADDRESS received
+			STATE14: begin
+					dst_addr_valid <= 1'b1;
+				end
+			//STATE9 is equivilant to valid DST_ADDRESS received last posedge of clock
+			STATE15:begin
+					dst_addr_valid <= 1'b0;
+				end
+			//STATE20 is equivilant to valid SRC_ADDRESS received
+			STATE20: begin
+					src_addr_valid <= 1'b1;
+				end
+			//STATE9 is equivilant to valid SRC_ADDRESS received last posedge of clock
+			STATE21:begin
+					src_addr_valid <= 1'b0;
+				end
+			//STATE8 is equivilant to valid TYPE_LENGTH received
+			STATE22: begin
+					type_length_valid <= 1'b1;
+				end
+		endcase		
 	end
 end
-
-// always @(posedge clock) begin
-// 	if (reset == 1'b1) begin // reset is synchronus logical high
-		
-// 	end
-// 	else if () begin
-		
-// 	end
-// end
 
 
 endmodule
