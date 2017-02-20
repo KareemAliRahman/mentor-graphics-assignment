@@ -3,7 +3,7 @@ This module cotains the Ethernet Packet Detector implementation
 of Cobinational and Sequential parts of the Moore Finite State Machine
 */
 
-module epd_fms(
+module epd_fsm(
 		input clock,
 		input reset,
 		input [7:0] data,
