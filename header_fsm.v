@@ -2,22 +2,24 @@
 This Module implements the parsing Moore FSM of Ethernet Header Fields 
 */
 module header_fsm(
+		input enable,
 		input clock,
-		input reset,
 		input [7:0] data,
-		input control,
 		output preamble_valid,
-		output src_addr_valid,
 		output dst_addr_valid,
+		output src_addr_valid,
 		output type_length_valid
 	);
 
+//Inputs: all ACTIVE HIGH
 wire [7:0] data;
-wire clock, reset, control;
+wire clock, enable_h;
 
-reg preamble_valid, src_addr_valid, 
-	dst_addr_valid, type_length_valid;
+//Outputs: all ACTIVE HIGH
+reg preamble_valid, dst_addr_valid
+	, src_addr_valid, type_length_valid;
 
+//22 states
 reg [4:0] state, next_state;
 
 parameter [4:0] STATE0  = 5'b00000;
@@ -46,9 +48,9 @@ parameter [4:0] STATE22 = 5'b10110;
 
 
 //COMBINATIONAL LOGIC
-always @(state or data or control) begin
+always @(state or data or enable_h) begin
 	next_state = 0; //prevent latches
-	if (control == 1'b1) begin
+	if (enable_h == 1'b1) begin
 		case({state,data}) 
 			{STATE0,8'h55}:next_state = STATE1;//1st byte PREAMBLE
 			{STATE1,8'h55}:next_state = STATE2;//2nd byte PREAMBLE
@@ -83,13 +85,14 @@ end
 
 //SEQUENTIAL LOGIC
 always @(posedge clock) begin //positive transition of clock 
-	if (reset == 1'b1) begin //positive High reset
+	if (enable_h == 1'b0) begin //If not enabled
 		state <= STATE0;
 		preamble_valid <= 1'b0;
 		dst_addr_valid <= 1'b0;
 		src_addr_valid <= 1'b0;
 		type_length_valid <= 1'b0;
 	end else begin
+		state <= next_state;
 		case(state)
 			//STATE0 is equivilant to start (either during instantiation or failure during parsing)
 			STATE0:begin
@@ -131,6 +134,5 @@ always @(posedge clock) begin //positive transition of clock
 		endcase		
 	end
 end
-
 
 endmodule
