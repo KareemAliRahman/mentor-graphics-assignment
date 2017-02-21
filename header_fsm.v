@@ -13,7 +13,7 @@ module header_fsm(
 
 //Inputs: all ACTIVE HIGH
 wire [7:0] data;
-wire clock, enable_h;
+wire clock, enable;
 
 //Outputs: all ACTIVE HIGH
 reg preamble_valid, dst_addr_valid
@@ -48,9 +48,9 @@ parameter [4:0] STATE22 = 5'b10110;
 
 
 //COMBINATIONAL LOGIC
-always @(state or data or enable_h) begin
+always @(state or data or enable) begin
 	next_state = 0; //prevent latches
-	if (enable_h == 1'b1) begin
+	if (enable == 1'b1) begin
 		case({state,data}) 
 			{STATE0,8'h55}:next_state = STATE1;//1st byte PREAMBLE
 			{STATE1,8'h55}:next_state = STATE2;//2nd byte PREAMBLE
@@ -85,7 +85,7 @@ end
 
 //SEQUENTIAL LOGIC
 always @(posedge clock) begin //positive transition of clock 
-	if (enable_h == 1'b0) begin //If not enabled
+	if (enable == 1'b0) begin //If not enabled
 		state <= STATE0;
 		preamble_valid <= 1'b0;
 		dst_addr_valid <= 1'b0;

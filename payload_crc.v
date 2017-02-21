@@ -10,7 +10,7 @@ module payload_crc(
 	);
 
 //Inputs: all ACTIVE HIGH
-wire clock, enable_p;
+wire clock, enable;
 
 //Output ACTIVE HIGH
 reg packet_size_valid;
@@ -19,7 +19,7 @@ reg packet_size_valid;
 reg [5:0] bytes_counter;
 
 always @(posedge clock) begin
-	if (enable_p == 1'b0) begin
+	if (enable == 1'b0) begin
 		bytes_counter <= 0;
 		packet_size_valid <= 1'b0;
 	end else begin
