@@ -11,8 +11,8 @@ module epd_fsm(
 		input [7:0] data,
 		input control,
 		output preamble_valid,
-		output src_addr_valid,
 		output dst_addr_valid,
+		output src_addr_valid,
 		output type_length_valid,
 		output packet_size_valid,
 		output [3:0] valid_packet_counter 
