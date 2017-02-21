@@ -92,7 +92,7 @@ always @(posedge clock) begin //positive transition of clock
 		src_addr_valid <= 1'b0;
 		type_length_valid <= 1'b0;
 	end else begin
-		state <= next_state;
+		state = next_state; //blocking assignment to reflect in output immediately
 		case(state)
 			//STATE0 is equivilant to start (either during instantiation or failure during parsing)
 			STATE0:begin

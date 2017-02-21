@@ -2,16 +2,6 @@
 
 module header_fsm_tb();
 
-    // input clock,
-    // input reset,
-    // input [7:0] data,
-    // input control,
-    // output preamble_valid,
-    // output src_addr_valid,
-    // output dst_addr_valid,
-    // output type_length_valid,
-    // output packet_size_valid,
-    // output [3:0] valid_packet_counter
 reg clock ,enable;
 reg [7:0] data;
 wire preamble_valid, dst_addr_valid, src_addr_valid,
@@ -20,31 +10,21 @@ wire preamble_valid, dst_addr_valid, src_addr_valid,
 initial begin
   $dumpfile("header_fsm_tb.vcd");
   $dumpvars(0,header_fsm_tb);
+  enable = 0;
   clock = 1;
-  enable = 1;
-  data = 0;
-  #4 reset = 0;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55; // Preamble
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
+  enable = 0;
+  #5 enable = 1;
 
-  #1 data = 8'h01;#1 data = 8'h02;#1 data = 8'h03;#1 data = 8'h04; // DST
-  #1 data = 8'h05;#1 data = 8'h06;
+  #2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55; // Preamble
+  #2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55;#2 data = 8'hD5;
 
-  #1 data = 8'hFF;#1 data = 8'hFE;#1 data = 8'hFD;#1 data = 8'hFC; // SRC
-  #1 data = 8'hFB;#1 data = 8'hFA;
+  #2 data = 8'h01;#2 data = 8'h02;#2 data = 8'h03;#2 data = 8'h04; // DST
+  #2 data = 8'h05;#2 data = 8'h06;
 
-  #1 data = 8'h08;#1 data = 8'h00; // Type_Length
+  #2 data = 8'hFF;#2 data = 8'hFE;#2 data = 8'hFD;#2 data = 8'hFC; // SRC
+  #2 data = 8'hFB;#2 data = 8'hFA;
 
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55; // payload
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
+  #2 data = 8'h08;#2 data = 8'h00; // Type_Length
 
   #10 $finish;
 end
@@ -53,7 +33,7 @@ always
  #1 clock = ~clock;
 
 
-header_fsm_tb U_header_fsm_tb(
+header_fsm U_header_fsm(
 enable,
 clock , // Clock
 data , // Active high request from agent 0
