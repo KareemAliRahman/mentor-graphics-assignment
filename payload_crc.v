@@ -23,10 +23,10 @@ always @(posedge clock) begin
 		bytes_counter <= 0;
 		packet_size_valid <= 1'b0;
 	end else begin
+		bytes_counter = bytes_counter + 1; 
 		if (bytes_counter == 50) begin
 			packet_size_valid <= 1'b1;
 		end
-		bytes_counter <= bytes_counter + 1;
 	end
 end
 

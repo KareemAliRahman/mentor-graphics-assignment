@@ -21,36 +21,43 @@ wire [3:0] valid_packet_counter;
 initial begin
   $dumpfile("simple_epd_tb.vcd");
   $dumpvars(0,simple_epd_tb);
+  // clock = 0;
+  // reset = 0;
+  // control = 0;
+  // data = 0;
+  // #4 reset = 1;
+  // reset = 0;
+  // control = 1;
   clock = 1;
   reset = 1;
-  control = 0;
-  data = 0;
-  #4 reset = 0;
   control = 1;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55; // Preamble
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
+  // data = 0;
+  #5 reset = 0;
+  
+  #2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55; // Preamble
+  #2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55;#2 data = 8'hD5;
 
-  #1 data = 8'h01;#1 data = 8'h02;#1 data = 8'h03;#1 data = 8'h04; // DST
-  #1 data = 8'h05;#1 data = 8'h06;
+  #2 data = 8'h01;#2 data = 8'h02;#2 data = 8'h03;#2 data = 8'h04; // DST
+  #2 data = 8'h05;#2 data = 8'h06;
 
-  #1 data = 8'hFF;#1 data = 8'hFE;#1 data = 8'hFD;#1 data = 8'hFC; // SRC
-  #1 data = 8'hFB;#1 data = 8'hFA;
+  #2 data = 8'hFF;#2 data = 8'hFE;#2 data = 8'hFD;#2 data = 8'hFC; // SRC
+  #2 data = 8'hFB;#2 data = 8'hFA;
 
-  #1 data = 8'h08;#1 data = 8'h00; // Type_Length
+  #2 data = 8'h08;#2 data = 8'h00; // Type_Length
 
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55; // payload
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
-  #1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;#1 data = 8'h55;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59; // payload
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
+  #2 data = 8'h55;#2 data = 8'h56;#2 data = 8'h57;#2 data = 8'h58;#2 data = 8'h59;
 
-  control = 0;
-  #1 data = 8'h00;
+  control = 1;
+  #2 data = 8'h00;
 
   #10 $finish;
 end
