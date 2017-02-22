@@ -32,7 +32,7 @@ initial begin
   reset = 1;
   control = 1;
   // data = 0;
-  #5 reset = 0;
+  #4 reset = 0;
   
   #2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55; // Preamble
   #2 data = 8'h55;#2 data = 8'h55;#2 data = 8'h55;#2 data = 8'hD5;

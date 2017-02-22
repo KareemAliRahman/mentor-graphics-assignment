@@ -36,7 +36,7 @@ reg enable_h, enable_p;
 reg [1:0] state, next_state;
 
 always @(control or type_length_valid or packet_size_valid) begin
-	next_state = 0;
+	next_state = 0; //prevent unintended latches
 	enable_h = 1'b1;
 	enable_p = 1'b0;
 	case (state)
