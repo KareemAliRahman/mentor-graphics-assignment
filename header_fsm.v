@@ -2,8 +2,9 @@
 This Module implements the parsing Moore FSM of Ethernet Header Fields 
 */
 module header_fsm(
-		input enable,
 		input clock,
+		input reset,
+		input enable,
 		input [7:0] data,
 		output preamble_valid,
 		output dst_addr_valid,
@@ -84,14 +85,22 @@ always @(state or data or enable) begin
 end
 
 //SEQUENTIAL LOGIC
-always @(posedge clock) begin //positive transition of clock 
-	if (enable == 1'b0) begin //If not enabled
+always @(posedge clock) begin //positive transition of clock 	
+	if(reset == 1'b1) begin //synchronus active high reset
 		state <= STATE0;
 		preamble_valid <= 1'b0;
 		dst_addr_valid <= 1'b0;
 		src_addr_valid <= 1'b0;
 		type_length_valid <= 1'b0;
-	end else begin
+	end
+	 // else if (enable == 1'b0) begin //If not enabled
+	// 	state <= STATE0;
+	// 	preamble_valid <= 1'b0;
+	// 	dst_addr_valid <= 1'b0;
+	// 	src_addr_valid <= 1'b0;
+	// 	type_length_valid <= 1'b0;
+	// end 
+	else begin
 		state = next_state; //blocking assignment to reflect in output immediately
 		case(state)
 			//STATE0 is equivilant to start (either during instantiation or failure during parsing)

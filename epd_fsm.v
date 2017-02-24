@@ -1,6 +1,6 @@
 /*
 This module cotains the Ethernet Packet Detector implementation
-of Cobinational and Sequential parts of the Moore Finite State Machine
+of Cobinational and Sequential parts of the controller Logic.
 */
 `include "header_fsm.v"
 `include "payload_crc.v"
@@ -92,8 +92,9 @@ always @(posedge clock) begin
 end
 
 header_fsm U_header_fsm(
-.enable (enable_h),
 .clock (clock),
+.reset (reset),
+.enable (enable_h),
 .data (data),
 .preamble_valid (preamble_valid),
 .dst_addr_valid (dst_addr_valid),
@@ -102,9 +103,11 @@ header_fsm U_header_fsm(
 );
 
 payload_crc U_payload_crc(
-.enable (enable_p),
 .clock (clock),
+.reset (reset),
+.enable (enable_p),
 .packet_size_valid (packet_size_valid)
+.valid_packet_counter (valid_packet_counter)
 );
 
 endmodule
