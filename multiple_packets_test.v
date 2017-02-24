@@ -1,4 +1,4 @@
-`include "epd_tb.v"
+`include "epd.v"
 
 module multiple_packets_test;
 
