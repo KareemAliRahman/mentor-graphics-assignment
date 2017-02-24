@@ -28,11 +28,12 @@ wire preamble_valid, src_addr_valid,
 	packet_size_valid;
 reg [3:0] valid_packet_counter;
 
+//3 states
 parameter [1:0] STATE0 = 2'b00;
 parameter [1:0] STATE1 = 2'b01;
 parameter [1:0] STATE2 = 2'b10;
 
-reg enable_h, enable_p;
+reg enable_h, enable_p; //enable signals for header and payload modules
 reg [1:0] state, next_state;
 
 always @(control or type_length_valid or packet_size_valid) begin
@@ -40,6 +41,9 @@ always @(control or type_length_valid or packet_size_valid) begin
 	enable_h = 1'b1;
 	enable_p = 1'b0;
 	case (state)
+		/*If Header parsing finishes successfully (type_length_valid 
+		* received) -> parse payload & CRC
+		*/
 		STATE0: begin
 				if (type_length_valid == 1'b1 && control == 1'b1) begin
 					enable_h = 1'b0;
@@ -47,6 +51,9 @@ always @(control or type_length_valid or packet_size_valid) begin
 					next_state = STATE1;
 				end
 			end
+		/*Parse payload untill packet_size_valid is received (successful
+		* parsing of payload & CRC)
+		*/ 
 		STATE1: begin
 				enable_h = 1'b0;
 				enable_p = 1'b1;
@@ -58,6 +65,7 @@ always @(control or type_length_valid or packet_size_valid) begin
 					next_state = STATE1;
 				end
 			end
+		// Keep accepting IFGs untill control is 1
 		STATE2: begin
 				if (data == 0 && control == 1'b0) begin
 					next_state = STATE0;

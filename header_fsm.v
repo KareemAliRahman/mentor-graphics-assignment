@@ -19,7 +19,7 @@ wire clock, enable;
 reg preamble_valid, dst_addr_valid
 	, src_addr_valid, type_length_valid;
 
-//22 states
+//23 states
 reg [4:0] state, next_state;
 
 parameter [4:0] STATE0  = 5'b00000;
