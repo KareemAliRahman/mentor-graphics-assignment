@@ -21,25 +21,22 @@ reg [3:0] valid_packet_counter;
 //Counter
 reg [5:0] bytes_counter;
 
-always @(enable) begin
-	if(enable == 1'b0)begin
-		bytes_counter <= 1;
+always @(posedge clock) begin
+ 	//if packet_size_valid was set in previous clock -> should be unset 
+	if(packet_size_valid == 1'b1) begin
 		packet_size_valid <= 1'b0;
 	end
-end
-
-always @(posedge clock) begin
 	if(reset == 1'b1) begin //synchronus active high reset
 		bytes_counter <= 1'b0;
 		packet_size_valid <= 1'b0;
 		valid_packet_counter <= 4'b0;
 	end
-	// if (enable == 1'b0) begin
-	// 	bytes_counter <= 1;
-	// 	packet_size_valid <= 1'b0;
-	// end 
+	if (enable == 1'b0) begin
+		bytes_counter <= 1;
+		packet_size_valid <= 1'b0;
+	end 
 	else begin
-		bytes_counter = bytes_counter + 1; 
+		bytes_counter = bytes_counter + 1; //blocking assignment
 		if (bytes_counter == 50) begin
 			packet_size_valid <= 1'b1;
 			valid_packet_counter <= valid_packet_counter + 1; 

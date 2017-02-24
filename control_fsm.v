@@ -2,13 +2,11 @@
 This module cotains the Ethernet Packet Detector implementation
 of Cobinational and Sequential parts of the controller Logic.
 */
-// `include "header_fsm.v"
-// `include "payload_crc.v"
-
 module control_fsm(
 		input clock,
 		input reset,
 		input control,
+		input [7:0] data,
 		input type_length_valid,
 		input packet_size_valid,
 		output enable_header,
@@ -18,6 +16,7 @@ module control_fsm(
 //Inputs: all ACTIVE HIGH
 wire clock, reset, control, 
 	type_length_valid, packet_size_valid;
+wire [7:0] data;
 
 //Outputs: all ACTIVE HIGH
 reg enable_header, enable_payload; //enable signals for header and payload modules
@@ -29,8 +28,8 @@ parameter [1:0] STATE2 = 2'b10;
 
 reg [1:0] state, next_state;
 
-always @(control or type_length_valid or packet_size_valid) begin
-	//next_state = 2'b00;
+always @(type_length_valid or packet_size_valid or control) begin
+	next_state = state; //prevent unintended latches
 	case(state)
 		STATE0:begin
 			if(type_length_valid == 1'b1 && control == 1'b1)begin
@@ -43,11 +42,10 @@ always @(control or type_length_valid or packet_size_valid) begin
 			end
 		end
 		STATE2:begin
-			if(control == 1'b0)begin
+			if(control == 1'b0 && data == 8'h00)begin
 				next_state = STATE0;
 			end
 		end
-		default: next_state = STATE0;
 	endcase
 end
 
@@ -72,28 +70,9 @@ always @(posedge clock) begin
 				enable_header <= 1'b0;
 				enable_payload	 <= 1'b0;
 			end
-
+			default: state = STATE0;
 		endcase
 	end
 end
-
-// header_fsm U_header_fsm(
-// .clock (clock),
-// .reset (reset),
-// .enable (enable_h),
-// .data (data),
-// .preamble_valid (preamble_valid),
-// .dst_addr_valid (dst_addr_valid),
-// .src_addr_valid (src_addr_valid),
-// .type_length_valid (type_length_valid)
-// );
-
-// payload_crc U_payload_crc(
-// .clock (clock),
-// .reset (reset),
-// .enable (enable_p),
-// .packet_size_valid (packet_size_valid)
-// .valid_packet_counter (valid_packet_counter)
-// );
 
 endmodule

@@ -93,13 +93,6 @@ always @(posedge clock) begin //positive transition of clock
 		src_addr_valid <= 1'b0;
 		type_length_valid <= 1'b0;
 	end
-	 // else if (enable == 1'b0) begin //If not enabled
-	// 	state <= STATE0;
-	// 	preamble_valid <= 1'b0;
-	// 	dst_addr_valid <= 1'b0;
-	// 	src_addr_valid <= 1'b0;
-	// 	type_length_valid <= 1'b0;
-	// end 
 	else begin
 		state = next_state; //blocking assignment to reflect in output immediately
 		case(state)

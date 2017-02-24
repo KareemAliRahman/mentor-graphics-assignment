@@ -1,6 +1,5 @@
 /*
-This module cotains the Ethernet Packet Detector implementation
-of Cobinational and Sequential parts of the controller Logic.
+ETHERNET PACKET DETECTOR
 */
 `include "header_fsm.v"
 `include "payload_crc.v"
@@ -33,6 +32,7 @@ control_fsm U_control_fsm(
 clock,
 reset,
 control,
+data,
 type_length_valid,
 packet_size_valid,
 enable_header,
