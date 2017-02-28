@@ -29,7 +29,7 @@ initial begin
 	$dumpfile("multiple_valid_packets_ifg_cntrl.vcd");
 	$dumpvars(0,multiple_valid_packets_ifg_cntrl);
 	
-	clock = 0;
+	clock = 1;
 	
 	control = 1;
 	data = 0;

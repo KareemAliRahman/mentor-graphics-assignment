@@ -2,7 +2,7 @@
 // sending of payload of a former packet. 
 `include "epd.v"
 
-module multiple_packets_hdr_cntrl;
+module multiple_packets_pld_cntrl;
 
 reg clock, reset, control;
 reg [7:0] data;
@@ -26,8 +26,8 @@ valid_packet_counter
 
 
 initial begin
-	$dumpfile("multiple_packets_hdr_cntrl.vcd");
-	$dumpvars(0,multiple_packets_hdr_cntrl);
+	$dumpfile("multiple_packets_pld_cntrl.vcd");
+	$dumpvars(0,multiple_packets_pld_cntrl);
 	
 	clock = 0;
 	

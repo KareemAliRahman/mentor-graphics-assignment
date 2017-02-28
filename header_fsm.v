@@ -20,9 +20,6 @@ wire clock, enable;
 reg preamble_valid, dst_addr_valid
 	, src_addr_valid, type_length_valid;
 
-//23 states
-reg [4:0] state, next_state;
-
 parameter [4:0] STATE0  = 5'b00000;
 parameter [4:0] STATE1  = 5'b00001;
 parameter [4:0] STATE2  = 5'b00010;
@@ -46,6 +43,10 @@ parameter [4:0] STATE19 = 5'b10011;
 parameter [4:0] STATE20 = 5'b10100;
 parameter [4:0] STATE21 = 5'b10101;
 parameter [4:0] STATE22 = 5'b10110;
+
+//23 states
+reg [4:0] state = STATE0;
+reg [4:0] next_state = STATE0;
 
 
 //COMBINATIONAL LOGIC
