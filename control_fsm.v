@@ -30,7 +30,7 @@ reg [1:0] state = STATE0;
 reg [1:0] next_state = STATE0;
 
 assign enable_header = control && !state;
-assign enable_payload = control && state;
+assign enable_payload = control & state;
 
 // always @(*) begin
 // 	enable_header <= control && !state;
@@ -51,9 +51,9 @@ always @(type_length_valid or packet_size_valid) begin
 			if(packet_size_valid == 1'b1)begin
 				next_state = STATE2;
 			end
-			if(control == 1'b0)begin
-				next_state = STATE0;
-			end
+			// if(control == 1'b0)begin
+			// 	next_state = STATE0;
+			// end
 		end
 		STATE2:begin
 			next_state = STATE2;
@@ -65,42 +65,18 @@ always @(type_length_valid or packet_size_valid) begin
 end
 
 always @(posedge clock) begin
-	// $display("%b",state);
-	// // $display("%b",state != 2'bxx);
-	// $display("%b",state != STATE0 || state !=STATE1 || state !=STATE2);
-	// $display("--------------------------");
-	// if(state != STATE0 || state !=STATE1 || state !=STATE2)begin
-	// 	$display("a7eh");
+	// reset and control are synchronus active high
+	// if (reset == 1'b1 || control == 1'b0) begin
+	// 	state <= STATE0;
 	// end
 	if (reset == 1'b1) begin // reset is synchronus active high
 		state <= STATE0;
 		// enable_header = 1'b1;
 		// enable_payload = 1'b0;
 	end
-	// else if(state != STATE0 || state !=STATE1 || state !=STATE2)begin
-	// 	state = STATE0;
-	// end
 	else begin
 		state = next_state; //blocking assignment
-		// case(state)
-		// 	STATE0:begin
-		// 		enable_header <= 1'b1;
-		// 		enable_payload <= 1'b0;
-		// 	end
-		// 	STATE1:begin
-		// 		enable_header <= 1'b0;
-		// 		enable_payload <= 1'b1;
-		// 	end
-		// 	STATE2:begin
-		// 		enable_header <= 1'b0;
-		// 		enable_payload	 <= 1'b0;
-		// 	end
-		// 	default: state = STATE0;
-		// endcase
 	end
-	// $display(state);
-	// $display(state == 2'bxx);
-	
 end
 
 endmodule
