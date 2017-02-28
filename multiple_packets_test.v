@@ -2,8 +2,6 @@
 
 module multiple_packets_test;
 
-epd_tb epd_tb_U();
-
 reg clock, reset, control;
 reg [7:0] data;
 
