@@ -33,7 +33,6 @@ initial begin
 	control = 1;
 	data = 0;
 	reset = 0;
-	// #4 reset = 0;
 	
 	//***************************** First packet ******************************
 	//valid preamble
@@ -44,7 +43,7 @@ initial begin
 	#2 data = 8'h01; #2 data = 8'h02; #2 data = 8'h03; #2 data = 8'h04;
     #2 data = 8'h05; #2 data = 8'h06;
 
-    #2 reset = 1;//triggering reset during header
+    #2 reset = 1;//TRIGGERING RESET DURING HEADER
     #2 reset = 0;
 
     //valid SRC
@@ -56,9 +55,6 @@ initial begin
 
 	//send payload and crc
 	repeat (49) #2 data = 8'h55;#2 data = 8'h56;
-
-	// #4 reset = 1;
-    // #4 reset = 0;
     
 	//send one IFG
 	#2 control = 0;

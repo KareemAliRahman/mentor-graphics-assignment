@@ -34,7 +34,6 @@ initial begin
 	control = 1;
 	data = 0;
 	reset = 0;
-	// #4 reset = 0;
 	
 	//***************************** First packet ******************************
 	//valid preamble

@@ -32,7 +32,7 @@ initial begin
 	
 	control = 1;
 	data = 0;
-	reset = 1;
+	reset = 1; //RESET IS ALWAYS SET
 	
 	//***************************** First packet ******************************
 	//valid preamble

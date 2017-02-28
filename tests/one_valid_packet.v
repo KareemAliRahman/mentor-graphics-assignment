@@ -33,7 +33,6 @@ initial begin
 	control = 1;
 	data = 0;
 	reset = 0;
-	// #4 reset = 0;
 	
 	//***************************** First packet ******************************
 	//valid preamble
@@ -53,9 +52,6 @@ initial begin
 
 	//send payload and crc
 	repeat (49) #2 data = 8'h55;#2 data = 8'h56;
-
-	// #4 reset = 1;
-    // #4 reset = 0;
     
 	//send one IFG
 	#2 control = 0;

@@ -33,7 +33,6 @@ initial begin
 	control = 0; //CONTROL IS ALWAYS LOW
 	data = 0;
 	reset = 0;
-	// #4 reset = 0;
 	
 	//***************************** First packet ******************************
 	//valid preamble
