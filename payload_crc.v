@@ -16,7 +16,7 @@ wire clock, enable, reset;
 
 //Output: all ACTIVE HIGH
 reg packet_size_valid;
-reg [3:0] valid_packet_counter;
+reg [3:0] valid_packet_counter = 4'b0000;
 
 //Counter
 reg [5:0] bytes_counter;
