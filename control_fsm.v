@@ -66,7 +66,7 @@ end
 
 always @(posedge clock) begin
 	// reset and control are synchronus active high
-	if (reset == 1'b1 || control == 1'b0) begin
+	if (reset == 1'b1) begin
 		state <= STATE0;
 	end
 	// if (reset == 1'b1) begin // reset is synchronus active high
@@ -76,6 +76,10 @@ always @(posedge clock) begin
 	// end
 	else begin
 		state = next_state; //blocking assignment
+		if(control == 1'b0 && state != STATE2)begin
+			state <= STATE0;
+		end
+
 	end
 end
 
