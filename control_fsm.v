@@ -32,11 +32,6 @@ reg [1:0] next_state = STATE0;
 assign enable_header = control && !state;
 assign enable_payload = control & state;
 
-// always @(*) begin
-// 	enable_header <= control && !state;
-// 	enable_payload <= control & state;
-// end
-
 always @(type_length_valid or packet_size_valid or state) begin
 	next_state = STATE0; //prevent unintended latches
 	case(state)
@@ -51,9 +46,6 @@ always @(type_length_valid or packet_size_valid or state) begin
 			if(packet_size_valid == 1'b1)begin
 				next_state = STATE2;
 			end
-			// if(control == 1'b0)begin
-			// 	next_state = STATE0;
-			// end
 		end
 		STATE2:begin
 			next_state = STATE2;
@@ -65,15 +57,10 @@ always @(type_length_valid or packet_size_valid or state) begin
 end
 
 always @(posedge clock) begin
-	// reset and control are synchronus active high
+	// reset are synchronus active high
 	if (reset == 1'b1) begin
 		state <= STATE0;
 	end
-	// if (reset == 1'b1) begin // reset is synchronus active high
-	// 	state <= STATE0;
-	// 	// enable_header = 1'b1;
-	// 	// enable_payload = 1'b0;
-	// end
 	else begin
 		state = next_state; //blocking assignment
 		if((control == 1'b0 && state != STATE2 )
