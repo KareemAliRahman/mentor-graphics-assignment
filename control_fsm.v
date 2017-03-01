@@ -76,7 +76,8 @@ always @(posedge clock) begin
 	// end
 	else begin
 		state = next_state; //blocking assignment
-		if(control == 1'b0 && state != STATE2)begin
+		if((control == 1'b0 && state != STATE2 )
+			||(control == 1'b0 && state == STATE2 && data == 2'b00))begin
 			state <= STATE0;
 		end
 
